@@ -9,10 +9,10 @@
 
 ## 依赖包
 
-- topthink/framework 6.1
+- topthink/framework 8.0
 - topthink/think-orm 3.0
 - topthink/think-view 2.0
-- casbin/think-authz 1.5
+- casbin/think-authz 1.6
 - yzh52521/tp-jwt-auth 2.0
 - yzh52521/think-filesystem 3.0
 - godruoyi/php-snowflake 2.2
@@ -23,14 +23,14 @@
 
 ## 开发依赖包
 
-- squizlabs/php_codesniffer 3.6
-- captainhook/captainhook 5.10
-- ramsey/conventional-commits 1.1
+- squizlabs/php_codesniffer 3.7
+- captainhook/captainhook 5.16
+- ramsey/conventional-commits 1.4
 
 ## Gen 管理端
 
-- Ant Design Pro V5
-  https://github.com/3xdev/gen-adp5
+- Ant Design Pro V6
+  https://github.com/3xdev/gen-adp6
 
 ## 安装依赖
 
