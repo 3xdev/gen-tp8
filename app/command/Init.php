@@ -26,10 +26,15 @@ class Init extends Command
     protected $domain_map = [];
     // 数据类型映射
     protected $datatype_map = [];
+    // 数据库映射
+    protected $database_map = [
+        'mysql' => 'MYSQL',
+        'pgsql' => 'PostgreSQL',
+    ];
+    // 数据库连接配置
+    protected $database_connection = [];
     // 数据库类型映射键
     protected $database_type_key = [];
-    // 数据库配置
-    protected $config_database = [];
 
     protected function configure()
     {
@@ -45,15 +50,15 @@ class Init extends Command
             $output->writeln('<error>' . self::MODEL_PATH . ' is not exist</error>');
         } else {
             $this->models = json_decode(file_get_contents(self::MODEL_PATH), true);
-            $this->config_database = config('database.connections.' . config('database.default'));
-            $this->database_type_key = array_column($this->models['profile']['dataTypeSupports'], 'id', 'defKey')[$this->config_database['model_data_type']];
+            $this->database_connection = config('database.connections.' . config('database.default'));
+            $this->database_type_key = array_column($this->models['profile']['dataTypeSupports'], 'id', 'defKey')[$this->database_map[$this->database_connection['type']]];
             $this->entity_map = array_column($this->models['entities'], 'id');
             $this->dict_map = array_column($this->models['dicts'], 'id');
             $this->domain_map = array_column($this->models['domains'], 'id');
             $this->datatype_map = array_column($this->models['dataTypeMapping']['mappings'], 'id');
 
             // 创建表及字典
-            View::assign('prefix', $this->config_database['prefix']);
+            View::assign('prefix', $this->database_connection['prefix']);
             array_walk($this->models['entities'], [$this, 'createDDL']);
             array_walk($this->models['dicts'], [$this, 'insertDict']);
             $output->writeln('<info>Database Init Succeed</info>');
@@ -112,13 +117,13 @@ class Init extends Command
         View::assign('entity', $entity);
 
         try {
-            if ($this->config_database['type'] == 'pgsql') {
+            if ($this->database_connection['type'] == 'pgsql') {
                 foreach ($entity['seqs'] as $seq) {
                     View::assign('seq', $seq);
-                    Db::execute(View::fetch('database/' . $this->config_database['type'] . '/ddl_create_sequence'));
+                    Db::execute(View::fetch('database/' . $this->database_connection['type'] . '/ddl_create_sequence'));
                 }
             }
-            Db::execute(html_entity_decode(View::fetch('database/' . $this->config_database['type'] . '/ddl_create_table')));
+            Db::execute(html_entity_decode(View::fetch('database/' . $this->database_connection['type'] . '/ddl_create_table')));
         } catch (\Exception $e) {
             //$this->output->writeln('<warning>' . $e->getMessage() . '</warning>');
         }
@@ -132,7 +137,7 @@ class Init extends Command
             $index['fks'] = array_column($indexFields, 'defKey');
             View::assign('index', $index);
             try {
-                Db::execute(View::fetch('database/' . $this->config_database['type'] . '/ddl_create_index'));
+                Db::execute(View::fetch('database/' . $this->database_connection['type'] . '/ddl_create_index'));
             } catch (\Exception $e) {
                 //$this->output->writeln('<warning>' . $e->getMessage() . '</warning>');
             }
@@ -148,10 +153,10 @@ class Init extends Command
         empty($field['len']) && $field['len'] = $domain ? $domain['len'] : 0;
         empty($field['scale']) && $field['scale'] = $domain ? $domain['scale'] : 0;
         $field['type'] == 'TEXT' && $field['len'] = 0 && $field['defaultValue'] = '';
-        switch ($this->config_database['type']) {
+        switch ($this->database_connection['type']) {
             case 'pgsql':
                 in_array($field['type'], ['VARCHAR', 'NUMERIC']) || $field['len'] = 0;
-                $field['autoIncrement'] && $field['defaultValue'] = "nextval('" . $this->config_database['prefix'] . strtolower($entity['defKey']) . "_" . strtolower($field['defKey']) . "_seq')";
+                $field['autoIncrement'] && $field['defaultValue'] = "nextval('" . $this->database_connection['prefix'] . strtolower($entity['defKey']) . "_" . strtolower($field['defKey']) . "_seq')";
                 break;
             default:
                 break;

@@ -42,6 +42,7 @@ class SystemConfig extends Base
     // Schema获取器
     public function getSchemaAttr($value, $data)
     {
+        $data['default_value'] = unserialize($data['value']);
         return app()->formily->parseFieldSchema($data['code'], $data['title'], $data['component'], $data);
     }
 
@@ -72,7 +73,6 @@ class SystemConfig extends Base
     public static function removeCache($code)
     {
         return Cache::delete(self::CACHE_PREFIX . $code);
-        ;
     }
 
     // 模型事件

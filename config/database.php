@@ -20,7 +20,6 @@ return [
         'mysql' => [
             // 数据库类型
             'type'            => 'mysql',
-            'model_data_type' => 'MYSQL',
             // 服务器地址
             'hostname'        => env('database.hostname', '127.0.0.1'),
             // 数据库名
@@ -58,7 +57,6 @@ return [
         'pgsql' => [
             // 数据库类型
             'type'            => 'pgsql',
-            'model_data_type' => 'PostgreSQL',
             // 服务器地址
             'hostname'        => env('database.hostname', '127.0.0.1'),
             // 数据库名
