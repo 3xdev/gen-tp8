@@ -24,7 +24,7 @@
 ## 开发依赖包
 
 - squizlabs/php_codesniffer 3.7
-- captainhook/captainhook 5.16
+- captainhook/captainhook 5.18
 - ramsey/conventional-commits 1.4
 
 ## Gen 管理端

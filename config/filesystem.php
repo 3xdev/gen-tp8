@@ -21,11 +21,11 @@ return [
         ],
         // 七牛云存储
         'qiniu'  => [
-            'type'      => 'qiniu',
-            'accessKey' => env('qiniu.access_key'),
-            'secretKey' => env('qiniu.secret_key'),
-            'bucket'    => env('qiniu.bucket'),
-            'domain'    => env('qiniu.domain'),
+            'type'          => 'qiniu',
+            'access_key'    => env('qiniu.access_key'),
+            'secret_key'    => env('qiniu.secret_key'),
+            'bucket'        => env('qiniu.bucket'),
+            'domain'        => env('qiniu.domain'),
         ],
         // 阿里云OSS
         'aliyun'  => [

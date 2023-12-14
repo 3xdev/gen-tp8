@@ -12,7 +12,7 @@ class SystemForm extends Validate
     protected $rule = [
         'code|代码' => 'require|alphaDash|max:32|checkIsSystem|unique:\\app\\model\\SystemForm,code^delete_time',
         'name|名称' => 'require|max:100',
-        'schema_string|Schema' => 'require|checkIsJson',
+        'schema_string|Schema' => 'checkIsJson',
     ];
 
     // 更新验证场景

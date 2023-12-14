@@ -27,6 +27,6 @@ class SystemForm extends Base
 
     public function setSchemaStringAttr($value)
     {
-        is_object(json_decode($value)) && $this->set('schema', json_decode($value, true));
+        is_object(json_decode($value)) && $this->set('schema', json_decode($value));
     }
 }

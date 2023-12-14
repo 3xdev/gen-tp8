@@ -18,7 +18,8 @@ class SystemForm extends Base
      */
     public function create()
     {
-        $data = $this->request->post(['name', 'code', 'schema_string']);
+        $data = $this->request->post(['name', 'code']);
+        $data['schema_string'] = '{}';
         $data['delete_time'] = 0;
 
         $this->validate($data, 'SystemForm');
@@ -41,7 +42,6 @@ class SystemForm extends Base
     public function update($name)
     {
         $data = $this->request->post(['code', 'name', 'schema_string', 'status']);
-        $data['delete_time'] = 0;
 
         $model = SelfModel::where('code', $name)->find();
         if (!$model) {
