@@ -12,6 +12,7 @@ class UserAuth extends \thans\jwt\middleware\BaseMiddleware
 {
     public function handle($request, \Closure $next)
     {
+        // OPTIONS请求直接返回
         if ($request->isOptions()) {
             return $next($request);
         }
@@ -19,24 +20,22 @@ class UserAuth extends \thans\jwt\middleware\BaseMiddleware
         // 验证token
         try {
             $payload = $this->auth->auth();
-        } catch (TokenExpiredException $e) {
-            // 捕获token过期
-            // 刷新token
+        } catch (TokenExpiredException $e) { // 捕获token过期
+            // 尝试刷新token
             try {
+                $this->auth->setRefresh();
                 $token = $this->auth->refresh();
                 $payload = $this->auth->auth(false);
-                $this->setUser($payload->get('user_id'), $request);
+                $this->setUser($payload['user_id'], $request);
                 return $this->setAuthentication($next($request), $token);
-            } catch (TokenBlacklistGracePeriodException $e) {
-                // 捕获黑名单宽限期
+            } catch (TokenBlacklistGracePeriodException $e) { // 捕获黑名单宽限期
                 $payload = $this->auth->auth(false);
             }
-        } catch (TokenBlacklistGracePeriodException $e) {
-            // 捕获黑名单宽限期
+        } catch (TokenBlacklistGracePeriodException $e) { // 捕获黑名单宽限期
             $payload = $this->auth->auth(false);
         }
 
-        $this->setUser($payload->get('user_id'), $request);
+        $this->setUser($payload['user_id'], $request);
         return $next($request);
     }
 

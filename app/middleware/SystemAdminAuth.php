@@ -12,6 +12,7 @@ class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
 {
     public function handle($request, \Closure $next)
     {
+        // OPTIONS请求直接返回
         if ($request->isOptions()) {
             return $next($request);
         }
@@ -19,24 +20,22 @@ class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
         // 验证token
         try {
             $payload = $this->auth->auth();
-        } catch (TokenExpiredException $e) {
-            // 捕获token过期
-            // 刷新token
+        } catch (TokenExpiredException $e) { // 捕获token过期
+            // 尝试刷新token
             try {
+                $this->auth->setRefresh();
                 $token = $this->auth->refresh();
                 $payload = $this->auth->auth(false);
-                $this->setSystemAdmin($payload->get('id'), $request);
+                $this->setSystemAdmin($payload['id'], $request);
                 return $this->setAuthentication($next($request), $token);
-            } catch (TokenBlacklistGracePeriodException $e) {
-                // 捕获黑名单宽限期
+            } catch (TokenBlacklistGracePeriodException $e) { // 捕获黑名单宽限期
                 $payload = $this->auth->auth(false);
             }
-        } catch (TokenBlacklistGracePeriodException $e) {
-            // 捕获黑名单宽限期
+        } catch (TokenBlacklistGracePeriodException $e) { // 捕获黑名单宽限期
             $payload = $this->auth->auth(false);
         }
 
-        $this->setSystemAdmin($payload->get('id'), $request);
+        $this->setSystemAdmin($payload['id'], $request);
         return $next($request);
     }
 
@@ -45,7 +44,7 @@ class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
     {
         $admin = \app\model\SystemAdmin::find($id);
         if (!$admin) {
-        // 管理员不存在
+            // 不存在
             abort(401, '管理员不存在或己删除');
         }
         $request->admin = $admin;

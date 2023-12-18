@@ -43,7 +43,7 @@ class SystemTableOption extends Base
         }
 
         $path_rest = '/api/admin/rest/' . $this->btable->code;
-        return preg_match('/^(post|put|delete)(\w+)$/', $data['action'], $matches) ? [
+        return preg_match('/^(get|post|put|delete)(\w+)$/', $data['action'], $matches) ? [
             'method' => $matches[1],
             'url' => $path_rest . '/' . strtolower($matches[2]) . '/{{ids}}'
         ] : [];
