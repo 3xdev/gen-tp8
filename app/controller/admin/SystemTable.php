@@ -3,6 +3,7 @@
 namespace app\controller\admin;
 
 use app\model\SystemTable as SelfModel;
+use app\model\SystemTableOption;
 use tauthz\facade\Enforcer;
 
 class SystemTable extends Base
@@ -188,7 +189,7 @@ class SystemTable extends Base
         $roles = Enforcer::getRolesForUser($authzIdentifier);
         foreach ($schema['options'] as $gkey => $gvalue) {
             foreach ($gvalue as $key => $value) {
-                $act = in_array($value['type'], ['view', 'export']) ? 'get' : $value['action'];
+                $act = in_array($value['type'], [SystemTableOption::TABLE_OPTION_TYPE_VIEW, SystemTableOption::TABLE_OPTION_TYPE_EXPORT]) ? 'get' : $value['action'];
                 if (!in_array('role_1', $roles) && !Enforcer::enforce($authzIdentifier, $name, $act)) {
                     unset($schema['options'][$gkey][$key]);
                 }

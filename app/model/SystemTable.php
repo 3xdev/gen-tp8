@@ -29,7 +29,7 @@ class SystemTable extends Base
             'get' => '读取'
         ];
         foreach ($this->options as $option) {
-            if (in_array($option['type'], ['view', 'export'])) {
+            if (in_array($option['type'], [SystemTableOption::TABLE_OPTION_TYPE_VIEW, SystemTableOption::TABLE_OPTION_TYPE_EXPORT])) {
                 continue;
             }
             $kv[$option['action']] = isset($kv[$option['action']]) ? $kv[$option['action']] . '/' . $option['title'] : $option['title'];

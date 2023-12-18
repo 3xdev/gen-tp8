@@ -4,20 +4,32 @@ namespace app\model;
 
 class SystemTableOption extends Base
 {
+    // 操作类型定义
+    public const TABLE_OPTION_TYPE_ADD = 'add';
+    public const TABLE_OPTION_TYPE_EDIT = 'edit';
+    public const TABLE_OPTION_TYPE_DELETE = 'delete';
+    public const TABLE_OPTION_TYPE_BDELETE = 'bdelete';
+    public const TABLE_OPTION_TYPE_VIEW = 'view';
+    public const TABLE_OPTION_TYPE_EXPORT = 'export';
+    public const TABLE_OPTION_TYPE_FORM = 'form';
+    public const TABLE_OPTION_TYPE_TABLE = 'table';
+    public const TABLE_OPTION_TYPE_REQUEST = 'request';
+    public const TABLE_OPTION_TYPE_PAGE = 'page';
+
     public function setActionAttr($value, $data)
     {
         if (!empty($value)) {
             return $value;
         }
         switch ($data['type']) {
-            case 'add':
+            case self::TABLE_OPTION_TYPE_ADD:
                 $value = 'create';
                 break;
-            case 'edit':
+            case self::TABLE_OPTION_TYPE_EDIT:
                 $value = 'update';
                 break;
-            case 'delete':
-            case 'bdelete':
+            case self::TABLE_OPTION_TYPE_DELETE:
+            case self::TABLE_OPTION_TYPE_BDELETE:
                 $value = 'delete';
                 break;
             default:
@@ -28,7 +40,7 @@ class SystemTableOption extends Base
 
     public function getRequestAttr($value, $data)
     {
-        if (!in_array($data['type'], ['modal', 'request'])) {
+        if (!in_array($data['type'], [self::TABLE_OPTION_TYPE_FORM, self::TABLE_OPTION_TYPE_REQUEST])) {
             return [];
         }
 

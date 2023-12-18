@@ -7,6 +7,7 @@ use think\console\Input;
 use think\console\Output;
 use app\model\SystemTable;
 use app\model\SystemTableCol;
+use app\model\SystemTableOption;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PsrPrinter;
 
@@ -156,12 +157,12 @@ class Md2c extends Command
         ]);
         array_walk($entity['fields'], [$this, 'field2col'], $entity);
         $table->options()->saveAll([
-            ['group' => 'columns', 'type' => 'view', 'action' => 'get', 'title' => '查看'],
-            ['group' => 'columns', 'type' => 'edit', 'action' => 'update', 'title' => '编辑'],
-            ['group' => 'columns', 'type' => 'delete', 'action' => 'delete', 'title' => '删除',],
-            ['group' => 'toolbar', 'type' => 'add', 'action' => 'create', 'title' => '新建'],
-            ['group' => 'toolbar', 'type' => 'export', 'action' => 'get', 'title' => '导出'],
-            ['group' => 'batch', 'type' => 'bdelete', 'action' => 'delete', 'title' => '批量删除'],
+            ['group' => 'columns', 'type' => SystemTableOption::TABLE_OPTION_TYPE_VIEW, 'action' => 'get', 'title' => '查看'],
+            ['group' => 'columns', 'type' => SystemTableOption::TABLE_OPTION_TYPE_EDIT, 'action' => 'update', 'title' => '编辑'],
+            ['group' => 'columns', 'type' => SystemTableOption::TABLE_OPTION_TYPE_DELETE, 'action' => 'delete', 'title' => '删除',],
+            ['group' => 'toolbar', 'type' => SystemTableOption::TABLE_OPTION_TYPE_ADD, 'action' => 'create', 'title' => '新建'],
+            ['group' => 'toolbar', 'type' => SystemTableOption::TABLE_OPTION_TYPE_EXPORT, 'action' => 'get', 'title' => '导出'],
+            ['group' => 'batch', 'type' => SystemTableOption::TABLE_OPTION_TYPE_BDELETE, 'action' => 'delete', 'title' => '批量删除'],
         ]);
 
         $this->output->writeln('<info>' . $entity['defKey'] . ' ok.</info>');
