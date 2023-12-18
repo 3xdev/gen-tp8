@@ -13,6 +13,7 @@
 - topthink/think-orm 3.0
 - topthink/think-view 2.0
 - casbin/think-authz 1.7
+- thans/tp-jwt-auth 2.2
 - yzh52521/think-filesystem 3.0
 - godruoyi/php-snowflake 2.2
 - openspout/openspout 4.13

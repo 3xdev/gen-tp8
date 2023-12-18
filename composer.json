@@ -27,7 +27,8 @@
         "bluem/tree": "^3.2",
         "nette/php-generator": "^4.1",
         "nette/utils": "^4.0",
-        "openspout/openspout": "^4.13"
+        "openspout/openspout": "^4.13",
+        "thans/tp-jwt-auth": "^2.2"
     },
     "require-dev": {
         "symfony/var-dumper": ">=4.2",
