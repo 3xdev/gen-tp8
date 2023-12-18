@@ -22,7 +22,6 @@
         "topthink/think-orm": "^3.0",
         "topthink/think-view": "^2.0",
         "casbin/think-authz": "^1.7",
-        "yzh52521/tp-jwt-auth": "^2.0",
         "yzh52521/think-filesystem": "^3.0",
         "godruoyi/php-snowflake": "^2.2",
         "bluem/tree": "^3.2",
