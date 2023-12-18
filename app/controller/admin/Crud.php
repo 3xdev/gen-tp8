@@ -3,7 +3,9 @@
 namespace app\controller\admin;
 
 use app\model\SystemTable as SystemTableModel;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Writer\XLSX\Writer;
+use OpenSpout\Writer\XLSX\Options;
 use think\db\exception\ModelNotFoundException;
 
 /**
@@ -175,14 +177,14 @@ class Crud extends Base
             foreach ($cols as $col) {
                 $array[] = value2string($d[$col->data_index] ?? \think\helper\Arr::get($d, $col->data_index, ''), $col->value_enum);
             }
-            $dataRows[] = WriterEntityFactory::createRowFromArray($array);
+            $dataRows[] = Row::fromValues($array);
         }
 
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToBrowser('export.xlsx')
-               ->addRow(WriterEntityFactory::createRowFromArray($cols->column('title')))
-               ->addRows($dataRows)
-               ->close();
+        $writer = new Writer(new Options());
+        $writer->openToBrowser('export.xlsx');
+        $writer->addRow(Row::fromValues($cols->column('title')));
+        $writer->addRows($dataRows);
+        $writer->close();
         exit();
     }
     /**
