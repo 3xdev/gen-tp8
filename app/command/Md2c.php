@@ -71,6 +71,10 @@ class Md2c extends Command
         if (count($pks) > 1 || (count($pks) == 1 && $pks[0] != 'id')) {
             $class->addProperty('pk', count($pks) > 1 ? $pks : $pks[0])->setProtected();
         }
+        // 树形结构自关联字段
+        if (in_array('parent_id', $fks)) {
+            $class->addProperty('tree_parent', 'parent_id')->setPublic();
+        }
         // json字段
         if (count($jsons) > 0) {
             $class->addProperty('json', $jsons)->setProtected();

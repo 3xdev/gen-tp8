@@ -72,6 +72,19 @@ php think run -p 800
 php think md2c
 ```
 
+
+## 模型设计约定字段
+
+- 字段名=parent_id 树形结构自关联字段，生成的模型源码中自动定义
+```php
+    public $tree_parent = 'parent_id';
+```
+
+- 字段名=delete_time 树形结构自关联字段，生成的模型源码中自动引入软删除 trait
+```php
+    use SoftDelete;
+```
+
 ## 约定路由
 
 - 规则
@@ -169,7 +182,7 @@ User::where('status', 1)->where(function ($query) use($username, $mobile) {
 
 ### 模型支持树形列表
 
-1、模型 设置 树形数据结构字段
+1、模型 设置 树形数据结构字段(遵循模型设计约定，自动生成)
 ```php
 // 树形数据结构字段
 public $tree_parent = 'parent_id';
