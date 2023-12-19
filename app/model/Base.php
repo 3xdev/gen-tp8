@@ -32,6 +32,9 @@ class Base extends Model
     // 关联系统表格
     public $systemTable = null;
 
+    // 树形数据结构字段
+    public $tree_parent = '';
+
     // 关键字搜索主键字段
     public $keyword_fields = ['name'];
     // 关键字搜索主键字段

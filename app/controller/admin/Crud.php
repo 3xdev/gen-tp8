@@ -76,6 +76,7 @@ class Crud extends Base
      * @apiGroup ICRUD
      * @apiHeader {String} Authorization Token
      * @apiParam {String} table 表格代码
+     * @apiQuery {String} [mode] 数据结构(list:列表,tree:树)
      * @apiQuery {String} [:search] 查询键值对
      * @apiQuery {Number} [current] 当前页
      * @apiQuery {Number} [pageSize] 页大小
@@ -89,6 +90,7 @@ class Crud extends Base
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
         $this->model->systemTable = $table;
+        $mode = $this->request->get('mode', 'list');
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
         $search = $this->request->only(array_merge(
@@ -124,7 +126,10 @@ class Crud extends Base
 
         return $this->success([
             'total' => $total,
-            'data'  => $data
+            'data'  => ($mode === 'tree' && $this->model->tree_parent) ? new \BlueM\Tree(
+                $data,
+                ['parent' => $this->model->tree_parent, 'jsonSerializer' => new \BlueM\Tree\Serializer\HierarchicalTreeJsonSerializer()]
+            ) : $data
         ]);
     }
     /**

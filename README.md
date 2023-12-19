@@ -166,6 +166,17 @@ User::where('status', 1)->where(function ($query) use($username, $mobile) {
 // SELECT * FROM `gen_user` WHERE (  `status` = 1  AND (  ( `username` = 'liux' )  OR ( `mobile` <> '' AND `mobile` = '13012345678' ) ) ) AND `gen_user`.`delete_time` = '0'
 ```
 
+
+### 模型支持树形列表
+
+1、模型 设置 树形数据结构字段
+```php
+// 树形数据结构字段
+public $tree_parent = 'parent_id';
+```
+
+2、表格设计 表格属性，添加 "mode":"tree"
+
 ### 模型获取器及修改器
 
 示例 1：
