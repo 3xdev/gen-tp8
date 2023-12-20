@@ -224,7 +224,8 @@ class Crud extends Base
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
         $data = array_merge($this->request->post($table->cols->column('data_index')), $this->mergeCreate());
         $this->validate($data, parse_name(string_remove_prefix($this->request->controller(), 'admin.')));
-        $this->model->create($data);
+        $obj = $this->model->create($data);
+        $this->afterCreate($obj);
 
         return $this->success();
     }
@@ -236,6 +237,9 @@ class Crud extends Base
     public function mergeCreate()
     {
         return [];
+    }
+    public function afterCreate($obj)
+    {
     }
 
     /**
@@ -284,7 +288,10 @@ class Crud extends Base
         if (!$obj) {
             throw new ModelNotFoundException('数据不存在');
         }
-        $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
+        $data = array_merge(
+            $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index')),
+            $this->mergeUpdate()
+        );
         $this->validate(
             array_merge($obj->visible(array_merge($this->validate_field_append, [$obj->getPk()]))->toArray(), $data),
             parse_name(string_remove_prefix($this->request->controller(), 'admin.'))
@@ -295,7 +302,20 @@ class Crud extends Base
         $this->request->original_data = $original_data;
 
         $obj->save($data);
+        $this->afterUpdate($obj);
         return $this->success();
+    }
+    /**
+     * 更新的合并数据(扩展更新)
+     * @access public
+     * @return array
+     */
+    public function mergeUpdate()
+    {
+        return [];
+    }
+    public function afterUpdate($obj)
+    {
     }
 
     /**

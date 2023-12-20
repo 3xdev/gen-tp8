@@ -151,6 +151,18 @@ system_dict('config_tab');
 \app\model\SystemDict::fetchCache('config_tab');
 ```
 
+### crud控制器重载方法
+
+| 操作 | 重载方法      | 参数        | 说明                            |
+| ---- | ------------ | ----------- |-------------------------------- |
+|  增  | mergeCreate  | -           | 创建的合并数据(扩展创建)         |
+|  增  | afterCreate  | 模型对象实例 | 创建后操作                      |
+|  删  | eachDelete   | 模型对象实例 | 每个模型对象删除后操作           |
+|  改  | mergeUpdate  | -           | 更新的合并数据(扩展更新)         |
+|  改  | afterUpdate  | 模型对象实例 | 更新后操作                      |
+|  查  | whereIndex   | -           | 列表的条件限制                   |
+|  查  | mergeIndex   | -           | 列表的合并数据(扩展列表返回)      |
+|  查  | mergeRead    | -           | 列表的合并数据(扩展列表返回)      |
 
 ### 数据库查询
 
