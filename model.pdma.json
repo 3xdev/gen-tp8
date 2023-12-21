@@ -1,10 +1,10 @@
 {
-  "name": "gen",
+  "name": "model",
   "describe": "艮快低代码开发",
   "avatar": "",
   "version": "4.7.0",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2023-12-20 00:23:31",
+  "updatedTime": "2023-12-21 11:51:50",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",

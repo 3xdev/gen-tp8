@@ -1,6 +1,6 @@
 /.idea
 /.vscode
-/.back_gen
+/.back_model
 /vendor
 /public/doc
 *.log
