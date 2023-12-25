@@ -79,7 +79,9 @@ class Formily
 
         // 关联
         if (isset($props['value_enum_rel']) && !empty($props['value_enum_rel'])) {
-            $schema['type'] = 'array';
+            // 多选模式则数据类型为数组
+            strtolower($componentProps['mode'] ?? '') == 'multiple' && $schema['type'] = 'array';
+            // 取枚举值
             $schema['enum'] = [];
             $kvs = system_col_rel_kv($props['value_enum_rel']);
             foreach ($kvs as $k => $v) {
